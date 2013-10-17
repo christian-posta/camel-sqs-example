@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       ">
+
+
+    <context:property-placeholder  location="classpath:/default.properties" />
+    <bean name="sqsClient" class="com.amazonaws.services.sqs.AmazonSQSAsyncClient">
+        <constructor-arg>
+            <bean class="com.amazonaws.auth.BasicAWSCredentials">
+                <constructor-arg value="${access.key}"/>
+                <constructor-arg value="${secret.key}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!--bootstrap camel context-->
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <!--scan the package for route builders-->
+        <package>org.apache.camel.examples</package>
+    </camelContext>
+</beans>
